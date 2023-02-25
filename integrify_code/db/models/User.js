@@ -1,8 +1,8 @@
-const sequelize = require("sequelize")
+const sequelize = require('sequelize')
 const DataTypes = sequelize.DataTypes
 
-console.log("test", sequelize)
-const User =  sequelize.define("user", {
+console.log('test', sequelize)
+const User =  sequelize.define('user', {
     id: {
         type: DataTypes.STRING(60),
         primaryKey: true,

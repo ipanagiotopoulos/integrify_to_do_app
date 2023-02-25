@@ -1,13 +1,13 @@
 const { Sequelize, DataTypes } = require('sequelize')
 
 
-var dbUrl = process.env.db_url || `postgres://postgres:123456@localhost:5433/todo_db`
+var dbUrl = process.env.db_url || 'postgres://postgres:123456@localhost:5433/todo_db'
 
 const sequelize = new Sequelize(dbUrl, { dialect: 'postgres' })
 
 
 sequelize.authenticate().then(() => {
-    console.log("App connected to database")
+    console.log('App connected to database')
 }).catch((err) => {
     console.log(err)
 })

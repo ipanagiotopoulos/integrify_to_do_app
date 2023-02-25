@@ -1,5 +1,5 @@
-const express = require("express")
-const db = require("../../db")
+//const express = require('express')
+const db = require('../../db')
 
 const User =  db.users
 
@@ -14,7 +14,7 @@ const User =  db.users
    })
 
    if (username) {
-     return res.json(409).send("username already taken")
+     return res.json(409).send('username already taken')
    }
 
    const emailcheck = await User.findOne({
@@ -24,9 +24,8 @@ const User =  db.users
    })
 
    if (emailcheck) {
-     return res.json(409).send("Authentication failed")
+     return res.json(409).send('Authentication failed')
    }
-
    next()
  } catch (error) {
    console.log(error)

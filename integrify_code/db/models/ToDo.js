@@ -1,9 +1,9 @@
-const sequelize = require("sequelize")
+const sequelize = require('sequelize')
 const User = require('./User')
 const DataTypes = sequelize.DataTypes
 
 
-const ToDo = sequelize.define("todo", {
+const ToDo = sequelize.define('todo', {
     id: {
         type: DataTypes.INTEGER,
         autoIncrement: true,
@@ -40,7 +40,7 @@ const ToDo = sequelize.define("todo", {
     }, { timestamps: true })
     
 
-ToDo.belongsTo(User, { foreignKey: "id", as: "userId" })
+ToDo.belongsTo(User, { foreignKey: 'id', as: 'userId' })
 module.exports = {
     ToDo
 }

@@ -19,7 +19,8 @@ app.use(morgan('dev'))
 const userRoutes = require('./controllers/userController')
 const toDoRoutes = require('./routes/todos')
 
-const baseApiEndpoint = process.env.BASE_API_ENDPOINT || 'api' + process.env.BASE_API_VERSION || "v1"
+const baseApiEndpoint = process.env.BASE_API_ENDPOINT || 'api'
+    + process.env.BASE_API_VERSION || 'v1'
 app.use(baseApiEndpoint, userRoutes)
 app.use(baseApiEndpoint, toDoRoutes)
 
