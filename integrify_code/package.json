@@ -1,0 +1,32 @@
+{
+  "name": "integrify_to_do_app",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "scripts": {
+    "lint": "eslint src --ext .js",
+    "lint:fix": "npm run lint -- --fix",
+    "test:run":"jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ipanagiotopoulos/integrify_to_do_app.git"
+  },
+  "author": "Ioannis Panagiotopoulos",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ipanagiotopoulos/integrify_to_do_app/issues"
+  },
+  "homepage": "https://github.com/ipanagiotopoulos/integrify_to_do_app#readme",
+  "dependencies": {
+    "bcrypt": "^5.1.0",
+    "cookie-parser": "^1.4.6",
+    "dotenv": "^16.0.3",
+    "helmet": "^6.0.1",
+    "jsonwebtoken": "^9.0.0",
+    "morgan": "^1.10.0",
+    "pg": "^8.9.0",
+    "pg-hstore": "^2.3.4",
+    "sequelize": "^6.29.0"
+  }
+}
