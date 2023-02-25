@@ -1,0 +1,26 @@
+version: '3.8'
+services:
+  db:
+    image: postgres:14.1-alpine
+    restart: always
+    environment:
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+    ports:
+      - '5432:5432'
+    volumes: 
+      - db:/var/lib/postgresql/data
+  integrify_to_do_app:
+      environment:
+        - NODE_ENV=development
+      build:
+        context: .
+        dockerfile: ./integrify_code/Dockerfile
+      expose:
+        -  "${NODE_JS_EXPOSE_PORT}"
+      ports:
+        - "${NODE_JS_EXPOSE_PORT}:${NODE_JS_INTERNAL_PORT}"
+      command: npm run dev
+volumes:
+  db:
+    driver: local
