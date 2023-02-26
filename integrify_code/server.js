@@ -4,10 +4,11 @@ const helmet = require('helmet')
 const cookieParser = require('cookie-parser')
 
 const app = express()
+require('dotenv').config()
 
 const port = process.env.PORT || 8080
 
-require('dotenv').config()
+
 
 
 app.use(express.json())
@@ -16,11 +17,12 @@ app.use(cookieParser())
 app.use(helmet())
 app.use(morgan('dev'))
 
-const userRoutes = require('./controllers/userController')
+const userRoutes = require('./routes/auth')
 const toDoRoutes = require('./routes/todos')
 
-const baseApiEndpoint = process.env.BASE_API_ENDPOINT || 'api'
-    + process.env.BASE_API_VERSION || 'v1'
+const baseApiEndpoint = (process.env.BASE_API_ENDPOINT || '/api') +
+    (process.env.BASE_API_VERSION || '/v1')
+
 app.use(baseApiEndpoint, userRoutes)
 app.use(baseApiEndpoint, toDoRoutes)
 

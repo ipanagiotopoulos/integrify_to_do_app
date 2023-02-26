@@ -1,30 +1,34 @@
 //const express = require('express')
-const db = require('../../db')
+const {toDoAppDb} = require('../db/dbConnection')
 
-const User =  db.users
+const User =  toDoAppDb.users
 
 
- const saveUser = async (req, res, next) => {
-
+const saveUser = async (req, res, next) => {
+ var requestId = req.body.id
+ var requestEmail = req.body.email
  try {
-   const username = await User.findOne({
+   const id = await User.findOne({
      where: {
-       userName: req.body.userName,
+       id: requestId,
      },
    })
 
-   if (username) {
-     return res.json(409).send('username already taken')
+   if (id) {
+     console.log('user check')
+     return res.status(409).send({ message:'The id '+requestId+' has been already taken'})
    }
 
    const emailcheck = await User.findOne({
      where: {
-       email: req.body.email,
+       email: requestEmail,
      },
    })
 
    if (emailcheck) {
-     return res.json(409).send('Authentication failed')
+     console.log('email check')
+     return res.status(409).send({ message:'The email'+requestEmail+
+     ' has been already used'})
    }
    next()
  } catch (error) {

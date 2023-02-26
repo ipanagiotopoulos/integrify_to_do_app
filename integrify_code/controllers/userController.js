@@ -8,22 +8,25 @@ const User = toDoAppDb.users
 
 const signup = async (req, res) => {
  try {
-   const { userName, email, password } = req.body
+   const { id, email, password } = req.body
    const data = {
-     userName,
+     id,
      email,
      password: await bcrypt.hash(password, 10),
-   }
+     created: new Date(),
+     updated: new Date()
+  }
+
    const user = await User.create(data)
-   if(!user) return res.status(409).send('Credentials are not correct')
+   if(!user) return res.status(409).send({message:'Credentials are not correct'})
 
 
-   let token = jwt.sign({ id: user.id }, process.env.secretKey, {
+   let token = jwt.sign({ id: user.id }, process.env.SECRET_KEY, {
        expiresIn: 1 * 24 * 60 * 60 * 1000,
      })
 
     res.cookie('jwt', token, { maxAge: 1 * 24 * 60 * 60, httpOnly: true })
-     
+
     console.log('user', JSON.stringify(user, null, 2))
     console.log(token)
      //send users details
@@ -36,29 +39,41 @@ const signup = async (req, res) => {
 
 
 const login = async (req, res) => {
- try {
-   const { email, password } = req.body
-   const user = await User.findOne({
-     where: {
-     email: email
-   } 
-   })   
-   if (!user) return res.status(401).send('Authentication failed')
-     
-   const isSame = await bcrypt.compare(password, user.password)
-   if (!isSame)  return res.status(401).send('Authentication failed')
+  try {
+    const { id, password } = req.body
+    var user = await User.findOne({
+      where: {
+        id: id
+      }
+    })
 
-   let token = jwt.sign({ id: user.id }, process.env.secretKey, {
+    if (!user) {
+      user  = await User.findOne({
+         where: {
+           email: id
+         }
+      })
+      if (!user) return res.status(401).send({message:'Authentication failed'})
+    }
+
+   const isSame = await bcrypt.compare(password, user.password)
+   if (!isSame)  return res.status(401).send({message:'Authentication failed'})
+
+   let token = jwt.sign({ id: user.id }, process.env.SECRET_KEY, {
          expiresIn: 1 * 24 * 60 * 60 * 1000,
-       })
+    })
    res.cookie('jwt', token, { maxAge: 1 * 24 * 60 * 60, httpOnly: true })
-     
+
    console.log('user', JSON.stringify(user, null, 2))
    console.log(token)
-     
-   return res.status(201).send(user)     
- } catch (error) {
-   console.log(error)
+   const response = {
+     message: 'The user ' + user.id + ' has succesfully logged in!',
+     user:user
+   }
+    return res.status(201).send(response)
+  } catch (error) {
+    console.log(error)
+    return res.status(500).send({message:'Unfortunately something went wrong'})
  }
 }
 

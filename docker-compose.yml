@@ -1,11 +1,13 @@
 version: '3.8'
 services:
-  db:
+  integrify_db:
     image: postgres:14.1-alpine
     restart: always
+    container_name: INTEGRIFY_DB
     environment:
       - POSTGRES_USER=${POSTGRES_USER}
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - POSTGRES_DB= ${POSTGRES_DB}
     ports:
       - '5432:5432'
     volumes: 
@@ -22,7 +24,7 @@ services:
         - "${NODE_JS_EXPOSE_PORT}:${NODE_JS_INTERNAL_PORT}"
       command: npm start
       depends_on:
-      - db
+      - integrify_db
 volumes:
   db:
     driver: local

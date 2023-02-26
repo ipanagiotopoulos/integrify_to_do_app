@@ -1,9 +1,7 @@
-const sequelize = require('sequelize')
-const User = require('./User')
-const DataTypes = sequelize.DataTypes
+const {User} = require('../models/User')
 
-
-const ToDo = sequelize.define('todo', {
+module.exports = (sequelize, DataTypes) => {
+   const ToDo = sequelize.define('todo', {
     id: {
         type: DataTypes.INTEGER,
         autoIncrement: true,
@@ -23,24 +21,15 @@ const ToDo = sequelize.define('todo', {
         EmptyResultError:true
     },
     status: {
-        type: DataTypes.ENUM('NotStarted', 'OnGoing', 'Completed'), 
+        type: DataTypes.ENUM('NotStarted', 'OnGoing', 'Completed'),
         allowNull: false,
         EmptyResultError:true
     },
-    created: {
-        type: DataTypes.DATE,
-        allowNull: false,
-        EmptyResultError:true
-    },
-    updated: {
-        type: DataTypes.DATE,
-        allowNull: false,
-        EmptyResultError:true
-    }
-    }, { timestamps: true })
-    
+   }, { timestamps: true })
 
-ToDo.belongsTo(User, { foreignKey: 'id', as: 'userId' })
-module.exports = {
-    ToDo
+    ToDo.associate = (models) => {
+        ToDo.belongsTo(User, { foreignKey: 'id', as: 'userId' })
+    }
+
+   return ToDo
 }
