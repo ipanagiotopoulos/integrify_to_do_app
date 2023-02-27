@@ -3,13 +3,13 @@
 # Integrify Coding Challenge 
 ## Node.js assignment
 
-The goal is to implement an **RESTful** api for keeping track of every users' **ToDo** tasks.
+The goal of this project is to implement an **RESTful** API for keeping track of every user's **ToDo** tasks.
 
-As per requirement, I have implemented and API with the use of **Node.js**, **Express.js Framework** and **Sequelize ORM**:
+As per requirement, I have implemented and API with the use of **Node.js**, **Express.js Framework** and **Sequelize ORM**
 
-The main and only actor of this API is the **User** who has **access** to the ToDo tasks that has submitted on his own.
+The main and only actor of this API is the **User** who has **access** to their ToDo tasks that  they  submitted on their own.
 
-The **User** possesses these fields as defined in our /db/models directory.
+The **User** possesses the fields listed as below:
 
 **User**:
 
@@ -19,7 +19,8 @@ The **User** possesses these fields as defined in our /db/models directory.
 - Created timestamp: When the user is created
 - Created timestamp: When the user is created
 
-The **ToDo** object, is the core object of this API which describes a user's task and it possesses these fields:
+The **ToDo** object, is the core object of this API which describes a task that a certain user has set. 
+The ToDo model contains these fields:
 
 **Todo**
 
@@ -34,13 +35,13 @@ The **ToDo** object, is the core object of this API which describes a user's tas
 ## Task's core objective
 Our task is to implement a REST API with the below endpoints in mind:
 
-- **POST** */api/v1/signup*: Sign up as an user of the system, using email & password
+- **POST** */api/v1/signup*: Sign up as a user of the system, using email & password
 - **POST** */api/v1/signin*: Sign in using email & password. The system will return the JWT token that can be used to call the APIs that follow
 - **PUT** */api/v1/changePassword*: Change user’s password
-- **GET** */api/v1/todos?status=[status]*: Get a list of todo items. Optionally, a status query param can be included to return only items of specific status. If not present, return all items
-- **POST** */api/v1/todos*: Create a new todo item
-- **PUT** */api/v1/todos/:id*: Update a todo item
-- **DELETE** */api/v1/todos/:id*: Delete a todo item
+- **GET** */api/v1/todos?status=[status]*: Get a list of ToDo items. Optionally, a status query param can be included to return only items of specific status. If not present, return all items
+- **POST** */api/v1/todos*: Create a new ToDo item
+- **PUT** */api/v1/todos/:id*: Update a ToDo item
+- **DELETE** */api/v1/todos/:id*: Delete a ToDo item
 
 
 
@@ -50,32 +51,32 @@ Our task is to implement a REST API with the below endpoints in mind:
 - Node.js environment
 - Express.js framework
 - Sequelize ORM
-- jwt, bcrypt for token signing/verifying and hashing passwords
+- JWT, bcrypt for signing/verifying tokens and hashing passwords
 - swagger-autogen for generating openapi and swagger API specification files
 - swagger-ui for presenting our swagger file through docs pages
 
 
 
 ## Prerequisites
-You should have [**Docker**](https://docker.io)  installed in your local machine and [**docker-compose**](https://docs.docker.com/compose/).
+You should have [**Docker**](https://docker.io) and [**docker-compose**](https://docs.docker.com/compose/) installed in your local machine.
 
 ## Helpful extra software
 **For dev purposes:**
 
-A fully setup **Node.js** and **npm**  will help you if you need to run this application directly from your host machine.
-However, our Node.js app is fully containerized so these tools are not mandatory for you to run this app.
+A fully setup **Node.js** environment with  **npm**  will help you if you need to run this application directly from the host.
+However, our Node.js app is fully containerized so these tools are not mandatory for  running this app.
+
 
 ## Installation
 
-Install  [**Docker**](https://docker.io) in your local machine and [**docker-compose**](https://docs.docker.com/compose/) if you don't have them alredy in your local machine.
+Install  [**Docker**](https://docker.io) and [**docker-compose**](https://docs.docker.com/compose/) in your local machine 
+if you don't have them alredy in your local machine.
 
 **Clone repository**
 git clone https://github.com/ipanagiotopoulos/integrify_to_do_app
 
 
-## Docker containers structure and code
-
-**Workspace** is located under **integrify_to_do_app** folder.
+## Docker containers' structure and code
 
 This stack contains two containers
 
@@ -115,9 +116,9 @@ volumes:
 **integrify_db** is where our app's PostgreSQL database is hosted
 
 ## integrify_to_do_app 
-**internships_web** is a container based on node:lts-alpine container which hosts our node.js app(REST API application)
-**/integrify_to_do_app/integrify_code** is the main workspace folder for our Node.js application.
-For this containerized app, you can check the Dockerfile file under the integrify_code folder.
+- **internships_web** is a container based on node:lts-alpine image which hosts our Node.js app(REST API application)
+- **/integrify_to_do_app/integrify_code** is the main workspace folder for our Node.js application.
+- For the setup of **integrify_to_do_app**, you can have a look at the Dockerfile file which is under the **integrify_code** folder.
  
 
 
@@ -129,7 +130,7 @@ For this containerized app, you can check the Dockerfile file under the integrif
  2. cp example.env .env
 
  
-  2.1 set your postgres db creds
+  2.1 set your PostgreSQL db credentials
   
      ```
        POSTGRES_USER = <YOUR ADMIN>
@@ -161,24 +162,24 @@ For this containerized app, you can check the Dockerfile file under the integrif
      BASE_API_VERSION= "/v1"
    ``` 
      
-   We always recommend 5432 for the PostgreSQL database container 
+   We always recommend 5432 for the integrify_db container, as it is a PostgreSQL database. 
   
-   **Otherwise** you will have to change the port in the **docker-compose.yml** under the root folder of your local repository
+   **Otherwise** you need to change the port in the **docker-compose.yml** under the root folder of your local repository.
      
-   Also it is important to keep the  DATABASE_HOST value, since it's named after the service name which has been declared in the **docker-compose** file
+   Also it is important to keep the  DATABASE_HOST value as it is in the example.env file, since the hostname of the database is named after the service name which has been declared in the **docker-compose** file.
    
    The **BASE_API_ENDPOINT** and **BASE_API_VERSION** need to remain the same in order to set all the new routes under the **/api/v1** path,
    
-   but for future-proofing this app we have used these staging variables.
+   but for future-proofing this app we are using these staging variables for any newer versions of the API.
 
  5. run docker-compose up --build -d in the **root** folder
 
 
 ## USAGE
 
-  Our API is located under the /api/v1 path according to the  recommended configuration scheme, and you can test our endpoints with the help of tools such
+  Our API endpoints are located under the /api/v1 path according to the recommended configuration scheme, and you can test our endpoints with the help of tools such
   as Postman or more preferrably by using the app's swagger-ui page under the **/api/v1/doc** path or by downloading the swagger.json file of this API which is
-  served under **/api/v1//api-docs/swagger.json**
+  served under the  **/api/v1//api-docs/swagger.json** path.
 
 ## License
 [MIT](https://choosealicense.com/licenses/mit/)
