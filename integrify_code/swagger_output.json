@@ -126,6 +126,11 @@
             "name": "authorization",
             "in": "header",
             "type": "string"
+          },
+          {
+            "name": "status",
+            "in": "query",
+            "type": "string"
           }
         ],
         "responses": {
