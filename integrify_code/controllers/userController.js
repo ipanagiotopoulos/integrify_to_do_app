@@ -14,7 +14,7 @@ const signup = async (req, res) => {
   }
 
    const user = await User.create(data)
-   if(!user) return res.status(409).send({message:'Credentials are not correct'})
+   if(!user) return res.status(409).send({ message: 'Auth error', error:'User details were not correctly processed.Try again later'})
 
 
    let token = jwt.sign({ id: user.id }, process.env.SECRET_KEY, {
@@ -26,7 +26,7 @@ const signup = async (req, res) => {
     console.log('user', JSON.stringify(user, null, 2))
     console.log(token)
      //send users details
-    return res.status(201).send(user)
+    return res.status(201).send({message:'Succes', data:user })
  } catch (error) {
    console.log(error)
  }
@@ -47,11 +47,11 @@ const login = async (req, res) => {
            email: id
          }
       })
-      if (!user) return res.status(401).send({message:'Authentication failed'})
+      if (!user) return res.status(401).send({ message: 'Auth error', message:'User does not exist!'})
     }
 
    const isSame = await bcrypt.compare(password, user.password)
-   if (!isSame) return res.status(401).send({message:'Authentication failed'})
+   if (!isSame) return res.status(401).send({ message: 'Auth error',error:'Wrong credentials'})
 
    let token = jwt.sign({ id: user.id }, process.env.SECRET_KEY, {
          expiresIn: 1 * 24 * 60 * 60 * 1000, //days*hours*minutes*seconds*milliseconds
@@ -63,10 +63,10 @@ const login = async (req, res) => {
      user: user,
      token: token
    }
-    return res.status(201).send(response)
+    return res.status(201).send({message:'Succes', data:response })
   } catch (error) {
     console.log(error)
-    return res.status(500).send({message:'Unfortunately something went wrong'})
+    return res.status(500).send({message: 'Server error',error:'Something went wrong, please try again'})
  }
 }
 
@@ -86,11 +86,11 @@ const changePassword = async (req, res) => {
            email: id
          }
     })
-    if (!user) return res.status(401).send({message:'Authentication failed'})
+    if (!user) return res.status(401).send({message: 'Auth error', error:'User does not exist!'})
   }
 
   const isSame = await bcrypt.compare(password, user.password)
-  if (!isSame) return res.status(401).send({ message: 'Authentication failed' })
+  if (!isSame) return res.status(401).send({message: 'Auth error', error:'Wrong credentials!'})
 
 
   user.set({
@@ -98,11 +98,11 @@ const changePassword = async (req, res) => {
   })
 
   await user.save().then((newUser) => {
-     return res.status(201).send({message: 'Password changed', user:newUser})
+     return res.status(201).send({message: 'Password changed', data:newUser})
   }).catch((err) => {
     return res.status(201).send({
       message: 'Something went wrong.You can try'+
-     'again later!'+err})
+     'again later!', error:err})
   })
 }
 

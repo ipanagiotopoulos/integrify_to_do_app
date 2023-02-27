@@ -15,8 +15,12 @@ const userChangePasswordValidate = (req, res, next) => {
       return res.status(500).send(error)
   }
   const {newPassword1, newPassword2} = req.body
-    if (newPassword1 !== newPassword2) return res.status(400).send(
-        { message: 'newPassword1 and newPassword2 should be the same' })
+  if (newPassword1 !== newPassword2) {
+    return res.status(400).send({
+      message: 'Validation error',
+      error: 'newPassword1 and newPassword2 should be the same'
+    })
+  }
   next()
 }
 

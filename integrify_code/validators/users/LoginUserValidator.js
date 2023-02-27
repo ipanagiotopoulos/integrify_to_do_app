@@ -10,7 +10,7 @@ const userLoginValidate = (req, res, next) => {
     abortEarly: false,
   })
     if (error) {
-      return res.status(500).send(error)
+      return res.status(500).send({ message: 'Validation error', error: error })
   }
   next()
 }

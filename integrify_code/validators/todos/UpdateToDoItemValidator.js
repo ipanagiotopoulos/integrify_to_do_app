@@ -16,13 +16,13 @@ const updateToDoValidate = (req, res, next) => {
     abortEarly: false,
   })
   if (error) {
-    return res.status(500).send(error)
+    return res.status(500).send({ message: 'Validation error', error: error })
   }
   var { error } = updateToDoItemBodySchema.validate(req.body, {
     abortEarly: false,
   })
   if (error) {
-    return res.status(500).send(error)
+    return res.status(500).send({ message: 'Validation error', error: error })
   }
   next()
 }
