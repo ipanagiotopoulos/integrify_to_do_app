@@ -2,7 +2,7 @@ const { Sequelize, DataTypes } = require('sequelize')
 
 var dbConnectionString = process.env.DATABASE_TYPE + '://' + process.env.DATABASE_USER
     + ':' + process.env.DATABASE_PASSWORD + '@' + process.env.DATABASE_HOST +
-    ':' + process.env.DATABASE_PORT + '/'+ 'postgres'
+    ':' + process.env.DATABASE_PORT + '/'+ process.env.DATABASE_NAME
 
 console.log(`Logging into database with connection string ${dbConnectionString}`)
 
