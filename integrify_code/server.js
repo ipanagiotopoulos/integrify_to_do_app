@@ -1,7 +1,8 @@
 const express = require('express')
 const morgan = require('morgan')
 const helmet = require('helmet')
-const cookieParser = require('cookie-parser')
+const swaggerUi = require('swagger-ui-express')
+const swaggerFile = require('./swagger_output.json')
 
 const app = express()
 require('dotenv').config()
@@ -13,7 +14,6 @@ const port = process.env.PORT || 8080
 
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
-app.use(cookieParser())
 app.use(helmet())
 app.use(morgan('dev'))
 
@@ -25,6 +25,7 @@ const baseApiEndpoint = (process.env.BASE_API_ENDPOINT || '/api') +
 
 app.use(baseApiEndpoint, userRoutes)
 app.use(baseApiEndpoint, toDoRoutes)
+app.use(baseApiEndpoint + '/doc', swaggerUi.serve, swaggerUi.setup(swaggerFile))
 
 app.use((req, res) => {
     res.status(404).json({success:false, message: 'Resource not found.'})
