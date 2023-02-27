@@ -18,13 +18,17 @@ const updateToDoValidate = (req, res, next) => {
   if (error) {
     return res.status(500).send({ message: 'Validation error', error: error })
   }
-  var { error } = updateToDoItemBodySchema.validate(req.body, {
+  const bodyValidationError = validateBody(req.body)
+  if (!bodyValidationError) return res.status(500)
+    .send({ message: 'Validation error', error: bodyValidationError })
+  next()
+}
+
+const validateBody = (body)=>{
+  var { error } = updateToDoItemBodySchema.validate(body, {
     abortEarly: false,
   })
-  if (error) {
-    return res.status(500).send({ message: 'Validation error', error: error })
-  }
-  next()
+  return error?error:null
 }
 
 module.exports = {

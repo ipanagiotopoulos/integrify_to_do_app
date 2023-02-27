@@ -15,7 +15,10 @@ const findToDos = async (req, res) => {
     }
     catch (err) {
        console.log(err)
-       res.status(500).send({message:'Server error', error:'Something went worng, please try again later'})
+        res.status(500).send({
+            message: 'Server error',
+            error: 'Something went worng, please try again later'
+        })
     }
 }
 
@@ -28,10 +31,17 @@ const insertToDo = async (req, res) => {
             status: req.body.status
         }
         const todoItem = await ToDo.create(data)
-        if (!todoItem) return res.status(500).send({message:'Server error', error:'Something went worng, please try again later'})
+        if (!todoItem) return res.status(500)
+            .send({
+                message: 'Server error',
+                error: 'Something went worng, please try again later'
+            })
         return res.status(201).send({message:'success', data:todoItem})
     } catch (error) {
-        res.status(500).send({message:'Server error', error:'Something went worng, please try again later'})
+        res.status(500).send({
+            message: 'Server error',
+            error: 'Something went worng, please try again later'
+        })
     }
 }
 
@@ -49,8 +59,16 @@ const updateToDo = async (req, res) => {
                 id: data.id,
             }
         })
-        if (!toDoItem) return res.status(404).send({ message:'Item not found',error: 'Item with id' + data.id + ' was not found' })
-        if(toDoItem.userId !== req.id) return res.status(403).send({message:'Forbidden resourse',error:'You do not have access to this resource'})
+        if (!toDoItem) return res.status(404).
+            send({
+                message: 'Item not found',
+                error: 'Item with id' + data.id + ' was not found'
+            })
+        if (toDoItem.userId !== req.id) return res.status(403).
+            send({
+                message: 'Forbidden resourse',
+                error: 'You do not have access to this resource'
+            })
         toDoItem.set({
             name: data.name,
             description: data.description,
@@ -59,10 +77,17 @@ const updateToDo = async (req, res) => {
         await toDoItem.save().then((item) => {
             res.status(201).send({message:'success', data:toDoItem})
         }).catch((err) => {
-            return res.status(500).send({ message: 'Error occured.Please try again later!', error: err })
+            return res.status(500)
+                .send({
+                    message: 'Error occured.Please try again later!',
+                    error: err
+                })
         })
     } catch (err) {
-        res.status(500).send({message:'Server error', error:'Something went worng, please try again later'})
+        res.status(500).send({
+            message: 'Server error',
+            error: 'Something went worng, please try again later'
+        })
     }
 }
 
@@ -72,8 +97,16 @@ const deleteToDo = async (req, res) => {
                 id: req.params.id,
             }
     })
-    if (!toDoItem) return res.status(404).send({message:'Item not found', error: 'Item with id' + req.params.id + ' was not found' })
-    if(toDoItem.userId !== req.id) return res.status(403).send({message:'Forbidden resourse',error:'You do not have access to this resource'})
+    if (!toDoItem) return res.status(404)
+        .send({
+            message: 'Item not found',
+            error: 'Item with id' + req.params.id + ' was not found'
+        })
+    if (toDoItem.userId !== req.id) return res.status(403)
+        .send({
+            message: 'Forbidden resourse',
+            error: 'You do not have access to this resource'
+        })
     await ToDo.destroy({
             where: {
                 id: req.params.id

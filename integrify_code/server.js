@@ -2,7 +2,7 @@ const express = require('express')
 const morgan = require('morgan')
 const helmet = require('helmet')
 const swaggerUi = require('swagger-ui-express')
-const swaggerFile = require('./swagger_json_backup.json')
+const swaggerFile = require('./integrify_todo_app_swagger.json')
 
 const app = express()
 require('dotenv').config()
@@ -22,7 +22,7 @@ const baseApiEndpoint = (process.env.BASE_API_ENDPOINT || '/api') +
 
 app.use(baseApiEndpoint, userRoutes)
 app.use(baseApiEndpoint, toDoRoutes)
-app.get(baseApiEndpoint+'/api-docs/swagger.json', (req, res) => res.json(swaggerFile));
+app.get(baseApiEndpoint+'/api-docs/swagger.json', (req, res) => res.json(swaggerFile))
 
 app.use(baseApiEndpoint + '/doc', swaggerUi.serve, swaggerUi.setup(swaggerFile))
 

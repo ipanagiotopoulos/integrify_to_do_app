@@ -14,7 +14,11 @@ const signup = async (req, res) => {
   }
 
    const user = await User.create(data)
-   if(!user) return res.status(409).send({ message: 'Auth error', error:'User details were not correctly processed.Try again later'})
+   if (!user) return res.status(409)
+     .send({
+       message: 'Auth error',
+       error: 'User details were not correctly processed.Try again later'
+     })
 
 
    let token = jwt.sign({ id: user.id }, process.env.SECRET_KEY, {
@@ -47,11 +51,17 @@ const login = async (req, res) => {
            email: id
          }
       })
-      if (!user) return res.status(401).send({ message: 'Auth error', message:'User does not exist!'})
+      if (!user) return res.status(401).send({
+        message: 'Auth error',
+        error: 'User does not exist!'
+      })
     }
 
    const isSame = await bcrypt.compare(password, user.password)
-   if (!isSame) return res.status(401).send({ message: 'Auth error',error:'Wrong credentials'})
+    if (!isSame) return res.status(401).send({
+      message: 'Auth error',
+      error: 'Wrong credentials'
+    })
 
    let token = jwt.sign({ id: user.id }, process.env.SECRET_KEY, {
          expiresIn: 1 * 24 * 60 * 60 * 1000, //days*hours*minutes*seconds*milliseconds
@@ -66,7 +76,10 @@ const login = async (req, res) => {
     return res.status(201).send({message:'Succes', data:response })
   } catch (error) {
     console.log(error)
-    return res.status(500).send({message: 'Server error',error:'Something went wrong, please try again'})
+    return res.status(500).send({
+      message: 'Server error',
+      error: 'Something went wrong, please try again'
+    })
  }
 }
 
@@ -86,11 +99,13 @@ const changePassword = async (req, res) => {
            email: id
          }
     })
-    if (!user) return res.status(401).send({message: 'Auth error', error:'User does not exist!'})
+    if (!user) return res.status(401)
+      .send({ message: 'Auth error', error: 'User does not exist!' })
   }
 
   const isSame = await bcrypt.compare(password, user.password)
-  if (!isSame) return res.status(401).send({message: 'Auth error', error:'Wrong credentials!'})
+  if (!isSame) return res.status(401)
+    .send({ message: 'Auth error', error: 'Wrong credentials!' })
 
 
   user.set({

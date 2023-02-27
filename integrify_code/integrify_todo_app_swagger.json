@@ -22,12 +22,15 @@
               "type": "object",
               "properties": {
                 "id": {
+                  "type":"string",
                   "example": "ioannis"
                 },
                 "email": {
+                  "type":"string",
                   "example": "ioannis@gmail.com"
                 },
                 "password": {
+                  "type":"string",
                   "example": "****"
                 }
               }
@@ -37,6 +40,9 @@
         "responses": {
           "201": {
             "description": "Created"
+          },
+          "404": {
+            "description": "Not Found"
           },
           "409": {
             "description": "Conflict"
@@ -58,9 +64,11 @@
               "type": "object",
               "properties": {
                 "id": {
+                  "type":"string",
                   "example": "ioannis"
                 },
                 "password": {
+                  "type":"string",
                   "example": "****"
                 }
               }
@@ -87,7 +95,8 @@
           {
             "name": "authorization",
             "in": "header",
-            "type": "string"
+            "type": "string",
+            "required": true
           },
           {
             "name": "body",
@@ -96,12 +105,15 @@
               "type": "object",
               "properties": {
                 "password": {
+                  "type":"string",
                   "example": "******"
                 },
                 "newPassword1": {
+                  "type":"string",
                   "example": "******"
                 },
                 "newPassword2": {
+                  "type":"string",
                   "example": "******"
                 }
               }
@@ -128,12 +140,14 @@
           {
             "name": "authorization",
             "in": "header",
-            "type": "string"
+            "type": "string",
+            "required": true
           },
           {
             "name": "status",
             "in": "query",
-            "type": "string"
+            "type": "string",
+            "enum": ["NotStarted", "OnGoing", "Completed"]
           }
         ],
         "responses": {
@@ -157,7 +171,8 @@
           {
             "name": "authorization",
             "in": "header",
-            "type": "string"
+            "type": "string",
+            "required": true
           },
           {
             "name": "body",
@@ -166,13 +181,17 @@
               "type": "object",
               "properties": {
                 "name": {
-                  "example": "item1"
+                  "example": "item1",
+                  "type":"string"
                 },
                 "description": {
+                  "type":"string",
                   "example": "Item's description"
                 },
                 "status": {
-                  "example": "Completed"
+                  "type":"string",
+                  "example": "Completed",
+                  "enum": ["NotStarted", "OnGoing", "Completed"]
                 }
               }
             }
@@ -205,12 +224,13 @@
             "name": "id",
             "in": "path",
             "required": true,
-            "type": "string"
+            "type": "number"
           },
           {
             "name": "authorization",
             "in": "header",
-            "type": "string"
+            "type": "Bearer token string",
+            "required": true
           },
           {
             "name": "body",
@@ -219,13 +239,17 @@
               "type": "object",
               "properties": {
                 "name": {
+                  "type":"string",
                   "example": "item1"
                 },
                 "description": {
+                  "type":"string",
                   "example": "Item's new description."
                 },
                 "status": {
-                  "example": "NotStarted"
+                  "type":"string",
+                  "example": "NotStarted",
+                  "enum": ["NotStarted", "OnGoing", "Completed"]
                 }
               }
             }
@@ -256,12 +280,13 @@
             "name": "id",
             "in": "path",
             "required": true,
-            "type": "string"
+            "type": "number"
           },
           {
             "name": "authorization",
             "in": "header",
-            "type": "string"
+            "type": "string",
+            "required": true
           }
         ],
         "responses": {
