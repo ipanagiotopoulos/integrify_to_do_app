@@ -5,17 +5,15 @@ const userLoginPostSchema = Joi.object({
     password: Joi.string().min(6).max(50).required(),
 })
 
-
 const userLoginValidate = (req, res, next) => {
   const { error } = userLoginPostSchema.validate(req.body, {
     abortEarly: false,
   })
     if (error) {
-      res.status(500).send(error)
+      return res.status(500).send(error)
   }
   next()
 }
-
 
 module.exports = {
     userLoginValidate

@@ -2,9 +2,7 @@ const bcrypt = require('bcrypt')
 const { toDoAppDb } = require('../db/dbConnection')
 const jwt = require('jsonwebtoken')
 
-
 const User = toDoAppDb.users
-
 
 const signup = async (req, res) => {
  try {
@@ -12,9 +10,7 @@ const signup = async (req, res) => {
    const data = {
      id,
      email,
-     password: await bcrypt.hash(password, 10),
-     created: new Date(),
-     updated: new Date()
+     password: await bcrypt.hash(password, 10)
   }
 
    const user = await User.create(data)
@@ -36,8 +32,6 @@ const signup = async (req, res) => {
  }
 }
 
-
-
 const login = async (req, res) => {
   try {
     const { id, password } = req.body
@@ -48,7 +42,7 @@ const login = async (req, res) => {
     })
 
     if (!user) {
-      user  = await User.findOne({
+      user = await User.findOne({
          where: {
            email: id
          }
@@ -57,10 +51,10 @@ const login = async (req, res) => {
     }
 
    const isSame = await bcrypt.compare(password, user.password)
-   if (!isSame)  return res.status(401).send({message:'Authentication failed'})
+   if (!isSame) return res.status(401).send({message:'Authentication failed'})
 
    let token = jwt.sign({ id: user.id }, process.env.SECRET_KEY, {
-         expiresIn: 1 * 24 * 60 * 60 * 1000,
+         expiresIn: 1 * 24 * 60 * 60 * 1000, //days*hours*minutes*seconds*milliseconds
     })
    console.log('user', JSON.stringify(user, null, 2))
    console.log(token)
@@ -77,7 +71,8 @@ const login = async (req, res) => {
 }
 
 const changePassword = async (req, res) => {
-  const { id, password, newPassword1 } = req.body
+  const { password, newPassword1 } = req.body
+  const id = req.id
 
   var user = await User.findOne({
       where: {
@@ -86,7 +81,7 @@ const changePassword = async (req, res) => {
   })
 
   if (!user) {
-    user  = await User.findOne({
+    user = await User.findOne({
         where: {
            email: id
          }

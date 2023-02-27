@@ -1,8 +1,8 @@
 //const express = require('express')
-const {toDoAppDb} = require('../db/dbConnection')
+const { toDoAppDb } = require('../db/dbConnection')
+const jwt = require('jsonwebtoken')
 
-const User =  toDoAppDb.users
-
+const User = toDoAppDb.users
 
 const saveUser = async (req, res, next) => {
  var requestId = req.body.id
@@ -36,13 +36,28 @@ const saveUser = async (req, res, next) => {
  }
  }
 
-//not implemented
-const updateUser = async (req, res, next) => {
-    next()
+const checkIfLoggedIn = async (req, res, next) => {
+  const token = req.headers['authorization']
+  if (!token) return res.status(403).send({ message: 'Not authorized for this action' })
+  try {
+    const decodedToken = jwt.verify(token, process.env.SECRET_KEY)
+    console.log('decoded token', decodedToken)
+    const user = await User.findOne({
+      where: {
+       id: decodedToken.id,
+     }
+    })
+    if(!user) return res.status(401).send({ message: 'User does not  exist' })
+    req.id = decodedToken.id
+  }
+  catch (err) {
+    console.log(err)
+    return res.status(401).send({message:'Invalid token'})
+  }
+  return next()
 }
 
-
 module.exports = {
-    saveUser,
-    updateUser
+  saveUser,
+  checkIfLoggedIn
 }

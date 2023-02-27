@@ -9,9 +9,6 @@ require('dotenv').config()
 
 const port = process.env.PORT || 8080
 
-
-
-
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 app.use(helmet())
@@ -30,6 +27,5 @@ app.use(baseApiEndpoint + '/doc', swaggerUi.serve, swaggerUi.setup(swaggerFile))
 app.use((req, res) => {
     res.status(404).json({success:false, message: 'Resource not found.'})
 })
-
 
 app.listen(port, () =>{`Server started on port ${port}`})
